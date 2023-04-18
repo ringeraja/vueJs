@@ -60,14 +60,14 @@
     </header>
     <section id="events">
       <h2>Events in Action</h2>
-      <button v-on:mouseEnter="increment(10)">Add</button>
+      <button @mouseEnter="increment(10)">Add</button>
       <button v-on:mouseEnter="decrement(5)">Remove</button>
       <p v-once>Starting counter: {{ counter }}</p>
       <p>Result: {{ counter }}</p>
-      <input type="text" v-on:input="setName($event,'vujicic')" v-on:keyup.enter="confirmInput()"> <!--browser provides default event object - info on event and html element on which event occured and then we can read it trough event.target, 
-        if we have other arguments we can call it using $event
-      -->
-      <p>Your name: {{ confirmedName }}</p>
+      <input type="text" v-model="name"> <!--two way binding -->
+      <input type="text" v-model="lastName">
+      <button v-on:click="resetInput"> Reset input </button>
+      <p>Your name: {{ fullname }}</p>
       <form v-on:submit.prevent="submitForm">
         <input type="text">
         <button>Clicke here!</button>
@@ -86,6 +86,16 @@
       <!-- 3) Repeat 2) but only output the entered value if the ENTER key was pressed -->
       <input type="text" v-on:keydown="saveInput" v-on:keyup.enter="confirmInput"/>
       <p>OUTPUT {{ confirmedInput }} </p>
+      
+      <h1>Reactivity in Action</h1>
+      <button @click="add(5)">Add 5</button>
+      <button @click="add(1)">Add 1</button>
+      <button @click="subtract(5)">Sub 5</button>
+      <!-- 1) Connect the buttons and calculate a value (a number) -->
+      <!-- Show "Not there yet" until you reach a result of exactly 37 -->
+      <!-- Show "Too much!" if the result is greater than 37 -->
+      <p>Result:{{number }} {{result }}</p>
+      <!-- 2) Watch for changes in "result" and reset the value to 0 after 5 seconds -->
     </section>
   </body>
 

@@ -95,12 +95,57 @@ const appCounter = Vue.createApp({
         return {
             counter: 0,
             name: '',
-            confirmedName: ''
+            confirmedName: '',
+            //fullname: '',
+            lastName: '',
         };
     },
+    watch: { //execute some code which maybe updates some data propertie in reaction to a property change
+        counter(value){
+            if (value > 50){
+                const that = this.counter;
+                setTimeout(function(){
+                    that.counter = 0;
+                } ,2000);
+                this.counter = 0;
+            }
+        }
+        /* name (value) {
+            if(value === ''){
+                this.fullname = '';
+            }else{
+                this.fullname = value + ' ' + this.lastName;
+            }
+        },// tells vue whenever name changes this watcher method will reexecute. we run logic insted of return
+        lastName (value) {
+            if(value === ''){
+                this.fullname = '';
+            }else{
+                this.fullname = this.name + ' ' + value;
+            }
+        } */
+    },
+    computed: {  // if we just want to calculate a dynamic value then use computed properties
+        fullname(){ // tehnically a method but we are using it as data . when using {{}} in code we call it without () we just point vue calls it
+            console.log("Running...");
+            if(this.name === '' || this.lastName === ''){
+                return '';
+            }
+            return this.name + ' ' + this.lastName; 
+        } 
+    },
     methods: {
-        setName(event, lastName){ // 
-            this.name = event.target.value + ' ' + lastName;
+        outputFullname(){
+            console.log("Running...");
+            if(this.name === ''){
+                return '';
+            }
+            return this.name + ' ' + 'prezime'; 
+
+        }, /* whenever anything on a page changes vue reexecutes every non event bount methods that is found on a page.
+            that is why methods isnt the best way to output dynamic values*/
+        setName(event,){ // 
+            this.name = event.target.value;
         },
         increment(num){
             this.counter = this.counter + num;
@@ -113,6 +158,9 @@ const appCounter = Vue.createApp({
         },
         confirmInput(){
             this.confirmedName = this.name;
+        },
+        resetInput(){
+            this.name= '';
         }
     }
 });
@@ -133,8 +181,28 @@ const assignment2 = Vue.createApp({
         return { 
             userInput: '',
             confirmedInput: '',
-
+            number: 0,
         };
+    },
+    watch: { // only executes when computed property result changes 
+        result(){
+            console.log("watcher executing..");
+            const that = this;
+            setTimeout(function(){
+                that.number = 0;
+            },2000);
+        }
+    },
+    computed: {
+        result(){
+           if(this.number < 37){
+            return "Not there yet";
+           }else if (this.number === 37){
+            return this.number;
+           }else{
+            return "Too much!"
+           }
+        }
     },
     methods: {
         showAlert(){
@@ -145,10 +213,24 @@ const assignment2 = Vue.createApp({
         },
         confirmInput(){
             this.confirmedInput = this.userInput;
+        },
+        add(num){
+            this.number = this.number + num;
+        },
+        subtract(num){
+            this.number = this.number -num;
         }
     }
 });
 
 assignment2.mount('#assignment2');
+
+
+//computed properties data, methods, we use computed properties as data . with the computed properties vue is aware of computed properties and will only evaluete it if its changed
+//key feature for outputing values
+
+//watchers tell vue to execute when some dependency changes
+
+//v-on: === @  v-bind:attributeName=""  :attributeName
 
 
