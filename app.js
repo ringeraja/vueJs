@@ -233,4 +233,3 @@ assignment2.mount('#assignment2');
 
 //v-on: === @  v-bind:attributeName=""  :attributeName
 
-
