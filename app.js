@@ -31,9 +31,6 @@ Vue.createApp({
     },
 }).mount("#assignment");
 
-
-
-
 Vue.createApp({
     data() {
       return {
@@ -93,8 +90,65 @@ one view app controls all child elements - we can use binding and interpolation 
 declarative approach we define the goal - template -> we mark th
 */
 
-//1 Exercise
+const appCounter = Vue.createApp({
+    data(){
+        return {
+            counter: 0,
+            name: '',
+            confirmedName: ''
+        };
+    },
+    methods: {
+        setName(event, lastName){ // 
+            this.name = event.target.value + ' ' + lastName;
+        },
+        increment(num){
+            this.counter = this.counter + num;
+        },
+        decrement(num){
+            this.counter = this.counter - num;
+        },
+        submitForm(){
+            alert("FORM Submitted!");
+        },
+        confirmInput(){
+            this.confirmedName = this.name;
+        }
+    }
+});
 
+appCounter.mount('#events')
 
+// v-on => react on a certain even -> can listen to click mouseEnter mouseLeave v-on:mouseEnter="counter++"
+// event listeners
+// event arguments
+//v-on:input on every keystroke
+//$event
+//event modifiers -change event and browser behaviour . we add it after v-on:eventName.prevent    -> .stop 
+// v-on:keyup.
+// v-once  ->any dynamic data binding should only be evaluated once
+
+const assignment2 = Vue.createApp({
+    data(){
+        return { 
+            userInput: '',
+            confirmedInput: '',
+
+        };
+    },
+    methods: {
+        showAlert(){
+            alert("Notifications working");
+        },
+        saveInput(event){
+            this.userInput = event.target.value;
+        },
+        confirmInput(){
+            this.confirmedInput = this.userInput;
+        }
+    }
+});
+
+assignment2.mount('#assignment2');
 
 

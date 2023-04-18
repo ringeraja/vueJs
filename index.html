@@ -60,9 +60,33 @@
     </header>
     <section id="events">
       <h2>Events in Action</h2>
-      <button>Add</button>
-      <button>Remove</button>
+      <button v-on:mouseEnter="increment(10)">Add</button>
+      <button v-on:mouseEnter="decrement(5)">Remove</button>
+      <p v-once>Starting counter: {{ counter }}</p>
       <p>Result: {{ counter }}</p>
+      <input type="text" v-on:input="setName($event,'vujicic')" v-on:keyup.enter="confirmInput()"> <!--browser provides default event object - info on event and html element on which event occured and then we can read it trough event.target, 
+        if we have other arguments we can call it using $event
+      -->
+      <p>Your name: {{ confirmedName }}</p>
+      <form v-on:submit.prevent="submitForm">
+        <input type="text">
+        <button>Clicke here!</button>
+      </form>
+    </section>
+
+    <section id="assignment2">
+      <h2>Event Practice</h2>
+      <!-- 1) Show an alert (any text of your choice) when the button is pressed -->
+      <button v-on:click="showAlert()">Show Alert</button>
+      <hr />
+      <!-- 2) Register the user input on "keydown" and output it in the paragraph (hint: event.target.value helps) -->
+      <input type="text" v-on:keydown="saveInput"/>
+      <p>Output: {{ userInput }}</p>
+      <hr />
+      <!-- 3) Repeat 2) but only output the entered value if the ENTER key was pressed -->
+      <input type="text" v-on:keydown="saveInput" v-on:keyup.enter="confirmInput"/>
+      <p>OUTPUT {{ confirmedInput }} </p>
     </section>
   </body>
+
 </html>
