@@ -8,9 +8,9 @@
       href="https://fonts.googleapis.com/css2?family=Jost:wght@400;700&display=swap"
       rel="stylesheet"
     />
-    <link rel="stylesheet" href="stylesDynamic.css" />
+    <link rel="stylesheet" href="style.css" />
     <script src="https://unpkg.com/vue@next" defer></script>
-    <script src="styleapp.js" defer></script>
+    <script src="appjs.js" defer></script>
   </head>
   <body>
     <header>
@@ -18,9 +18,30 @@
     </header>
     <section id="styling">
       <!-- <div class="demo" :style="{borderColor: boxASelected ? 'red' : 'blue'}" @click="boxSelected('A')"></div> -->
-      <div :class="{demo: true, active: boxASelected}" @click="boxSelected('A')"></div>
-      <div class="demo" @click="boxSelected('B')"></div>
-      <div class="demo" @click="boxSelected('C')"></div>
+      <div class="demo" :class="boxAClasses" @click="boxSelected('A')"></div> <!-- if boxASelected is true active clas is added-->
+      <div :class="['demo',{active: boxBSelected}]" @click="boxSelected('B')"></div>
+      <div class="demo" :class="{active: boxCSelected}" @click="boxSelected('C')"></div>
     </section>
+    <header>
+      <h1>Vue Styling</h1>
+    </header>
+    <section id="assignment">
+      <!-- 1) Fetch the user input and use it as a CSS class -->
+      <!-- The entered class should be added to the below paragraph -->
+      <input type="text" v-model="inputClass"/>
+      <p :class="inputClass"> tekst </p>
+      <!-- (available classes: "user1", "user2") -->
+      <p :class="pClasses">
+        Style me!
+      </p>
+      <button @click="toggleOnOff">Toggle Paragraph</button>
+      <!-- 2) Use the "visible" and "hidden" classes to show/ hide the above paragraph -->
+      <!-- Clicking the button should toggle between the two options -->
+
+      <!-- 3) Add dynamic inline styling to the below paragraph and let the user enter a background-color -->
+      <input type="text" v-model="inputBgColor"/>
+      <p :style="{backgroundColor: inputBgColor}" >Style me inline!</p>
+    </section>
+
   </body>
 </html>
