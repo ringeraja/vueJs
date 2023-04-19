@@ -58,3 +58,37 @@ const appE = Vue.createApp({
 });
 
 appE.mount('#assignment');
+
+const appGoals = Vue.createApp({
+    data(){
+        return {
+            enteredGoalValue: '',
+            goals: [],
+            toggle: true
+        };
+    },
+    computed:{
+        buttonCaption(){
+            return this.toggle ? 'Hide list' : 'Show list';
+        }
+    },
+    methods: {
+        addGoal(){
+            this.goals.push(this.enteredGoalValue);
+        },
+        removeGoal(idx){
+            this.goals.splice(idx,1); //will find the element in the array and remove it from it
+        },
+        toggleOnOff(){
+            this.toggle = !this.toggle;
+        }
+    }
+});
+
+appGoals.mount('#user-goals');
+//v-if="javascript expression ,data,methods,computed property.. directive -> leaves <!--v-if--> in code where it n
+//we can have any expression that has truth or false, 
+//v-if must be used after an element that has v-if -> must be direct neighbours. controling what is showing(including,and )
+//v-if really removes elements from DOM, v-show just hides and shows items with css display:none;
+//v-for to output data from an arrays . key="uniqueIdCriteria" should add it to help vue tell different element apart 
+// to make sure that entered values dont get lost
