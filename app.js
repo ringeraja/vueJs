@@ -233,3 +233,69 @@ assignment2.mount('#assignment2');
 
 //v-on: === @  v-bind:attributeName=""  :attributeName
 
+const appReactive = Vue.createApp({
+    data() {
+      return {
+        currentUserInput: '',
+        message: 'Vue is great!',
+      };
+    },
+    methods: {
+      saveInput(event) {
+        this.currentUserInput = event.target.value;
+      },
+      setText() {
+        //this.message = this.currentUserInput;
+        this.message = this.$refs.userText.value;
+        },
+
+    },
+    beforeCreate(){
+        console.log('Before Create Method');
+    },
+    created(){
+        console.log('Created Method fired');
+    },
+    beforeMount(){
+        console.log('Before Mount method');
+    },
+    mounted(){
+        console.log('Mount method fired');
+    },
+        // lifecycles - data changes also trigger their own lyfecycle hooks
+
+    beforeUpdate(){
+        console.log('Before update method fired');
+    },
+    updated(){
+        console.log('Updated method fired');
+    },    //instance unmount
+    beforeUnmount(){
+        console.log('Before unmount method fired');
+    },
+    unmounted(){
+        console.log('unmount method fired');
+    },
+  });
+  
+  appReactive.mount('#appReactive');
+  
+  const appReactive2 = Vue.createApp({
+    template: `
+    <p>{{ favoriteColor }} + !!!!</p>
+    `,
+    data(){
+        return{
+            favoriteColor: 'Blue'
+        };
+    }
+  });
+
+  appReactive2.mount('#appReactive2');
+
+  setTimeout(function () {
+    appReactive.unmount();
+  }, 3000);
+
+  //$refs -object full of key value pairs which uses refs as keys
+
