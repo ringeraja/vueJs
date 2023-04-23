@@ -41,7 +41,7 @@ app.component('friend-contact',{ // this component does not comunicate with parr
         return {
             detailsAreVisible:false,
             friend: {id: 'manuel',
-            name:'Manuel Lopez',
+            name:'Manuel lorenzo',
             phone: '0634535635',
             email: 'manuel@gmail.com',
            },
