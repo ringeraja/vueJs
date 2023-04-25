@@ -21,8 +21,21 @@
         ></friend-contact>
         
     </ul>
-
+    <header>
+      <active-user :username="user.name" :userage="user.age"></active-user>
+    <user-data @set-data="setUserData"></user-data>
+    </header>
     </section>
+    
+    <div>
+    <active-element
+      :topic-title="activeTopic && activeTopic.title"
+      :text="activeTopic && activeTopic.fullText"
+    ></active-element>
+    <knowledge-base></knowledge-base>
+  </div>
+
+    
 </template>
 
 
@@ -45,12 +58,57 @@ export default{
                 phone: '05465343535',
                 email: 'sara@gmail.com',
                 isFavorite: false
-
                 },
-
             ],
-            welcomeMessage: 'Friends List'
-        };
+            welcomeMessage: 'Friends List',
+            user: {
+              name: 'Nikola Vujicic',
+              age: 26
+            },
+            activeTopic: null,
+            topics: [{
+                id: 'basics',
+                title: 'The Basics',
+                description: 'Core Vue basics you have to know',
+                fullText:'Vue is a great framework and it has a couple of key concepts: Data binding, events, components and reactivity - that should tell you something!',
+              },{
+                id: 'components',
+                title: 'Components',
+                description:'Components are a core concept for building Vue UIs and apps',
+                fullText: 'With components, you can split logic (and markup) into separate building blocks and then combine those building blocks (and re-use them) to build powerful user interfaces.',
+              }
+            ],
+        }; 
+    },
+    /* provide: { //changes in data do not reflext in provided data( its a brand new object in memory)
+      topics: [{
+                id: 'basics',
+                title: 'The Basics',
+                description: 'Core Vue basics you have to know',
+                fullText:'Vue is a great framework and it has a couple of key concepts: Data binding, events, components and reactivity - that should tell you something!',
+              },{
+                id: 'components',
+                title: 'Components',
+                description:'Components are a core concept for building Vue UIs and apps',
+                fullText: 'With components, you can split logic (and markup) into separate building blocks and then combine those building blocks (and re-use them) to build powerful user interfaces.',
+              }
+            ],
+    }, */
+    provide() {
+      return {
+        topics: this.topics,
+        selectTopic: this.activateTopic
+      };
+    },
+    mounted() {
+      setTimeout(() => {
+        this.topics.push({
+          id: 'events',
+                title: 'Event ',
+                description: 'Events in vue',
+                fullText:'events allow you to trigger code on demand'
+        });
+      }, 3000);
     },
     methods: {
       toggleFavoriteStatus(friendId){
@@ -72,7 +130,16 @@ export default{
       deleteContact(friendId){
         this.friends = this.friends.filter(friend => friend.id !== friendId);
 
-      }
+      },
+      setUserData(name,age){
+        this.user = {
+          name:name,
+          age:age
+        }
+      },
+      activateTopic(topicId) {
+      this.activeTopic = this.topics.find((topic) => topic.id === topicId);
+    }
     },
 
 };
@@ -106,6 +173,7 @@ header {
   text-align: center;
   width: 90%;
   max-width: 40rem;
+  
 }
 
 #app ul {
@@ -162,4 +230,10 @@ form {
 #app form div {
   margin: 1rem 0;
 }
+h2 {
+  margin: 0.75rem 0;
+  text-align: center;
+}
+
+
 </style>
