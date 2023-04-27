@@ -27,7 +27,7 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
 input {
   display: inline;
   margin-right: 20px;

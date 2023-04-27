@@ -35,6 +35,32 @@
     <knowledge-base></knowledge-base>
   </div>
 
+  <section>
+    <div>
+    <!--<TheHeader/> -->
+  
+    <the-header></the-header>
+    <badge-list></badge-list>
+    <user-info
+      :full-name="activeUser.name"
+      :info-text="activeUser.description"
+      :role="activeUser.role"
+    ></user-info>
+    <course-goal #default="slotProps">
+     <!--<template #default="slotProps">-->  <!--value we get for slotProps will always be an object-->
+        <h2>{{ slotProps.item }}</h2>
+        <p>{{ slotProps['another-prop']}}</p>
+      <!--</template>-->
+    </course-goal>
+  </div>
+  <br/>
+  <button @click="setSelectedComponent('active-goals')">Active goals</button>
+  <button @click="setSelectedComponent('manage-goal')">Manage goals</button>
+ <!--  <active-goals v-if="selectedComponent === 'active-goals'"></active-goals>
+  <manage-goal v-if="selectedComponent === 'manage-goal'"></manage-goal> -->
+  <component v-bind:is="selectedComponent"></component>
+  </section>
+
     
 </template>
 
@@ -42,10 +68,32 @@
 <script>
 // configuration for the app app we wwant to mount on id="app" div
 // config object for main app
+import TheHeader from './components/TheHeader.vue';
+import BadgeList from './components/BadgeList.vue';
+import UserInfo from './components/UserInfo.vue';
+import CourseGoal from './components/CourseGoal.vue'
+
+import ActiveGoals from './components/ActiveGoals.vue';
+import ManageGoal from './components/ManageGoal.vue';
+
 
 export default{
+    components: {  //available in any component not only in app 
+      TheHeader: TheHeader,
+      BadgeList: BadgeList,
+      UserInfo: UserInfo,
+      CourseGoal,
+      ActiveGoals,
+      ManageGoal,
+    },// components registered here are only usable here in this file nowhere eles
     data (){
         return {
+            selectedComponent: 'active-goals',
+            activeUser: {
+                name: 'Maximilian Schwarzmüller',
+                description: 'Site owner and admin',
+                role: 'admin',
+            },
             friends: [
                 {id:'Nikola',
                 name:'Nikola Vujicic',
@@ -111,6 +159,9 @@ export default{
       }, 3000);
     },
     methods: {
+      setSelectedComponent(cmp){
+        this.selectedComponent = cmp;
+      },
       toggleFavoriteStatus(friendId){
         const identifiedFriend= this.friends.find(
           (friend) => friend.id === friendId);
@@ -162,7 +213,7 @@ html {
 body {
   margin: 0;
 }
-
+ /* 
 header {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   margin: 3rem auto;
@@ -173,16 +224,17 @@ header {
   text-align: center;
   width: 90%;
   max-width: 40rem;
-  
 }
+ zakomentarisano da bi se vezbalo sa stilovima u komponentama UserInfo,theheader,basecard,basbadge,*/
 
-#app ul {
+
+ #app ul {
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-#app li,
+#app /*li <-zakomentarisano zbog UserInfo,theheader...*/,
 form {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
   margin: 1rem auto;
@@ -193,13 +245,13 @@ form {
   max-width: 40rem;
 }
 
-#app h2 {
+/*li <-zakomentarisano zbog UserInfo,theheader...#app h2 {
   font-size: 2rem;
   border-bottom: 4px solid #ccc;
   color: #58004d;
   margin: 0 0 1rem 0;
 }
-
+*/
 #app button {
   font: inherit;
   cursor: pointer;
