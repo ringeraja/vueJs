@@ -1,5 +1,7 @@
 import { createApp } from 'vue';
 
+import { createRouter, createWebHistory } from 'vue-router';
+
 import AnyIndentifierApp from './App.vue';
 import FriendContact from './components/FriendContact.vue';
 import NewFriend from './components/NewFriend.vue';
@@ -16,10 +18,45 @@ import BaseBadge from './components/BaseBadge.vue';
 //import BadgeList from './components/BadgeList.vue';
 //import UserInfo from './components/UserInfo.vue';
 import BaseCard from './components/BaseCard.vue';
+import BaseWrap from './components/baseUI/BaseWrap';
+import BaseButton from './components/baseUI/BaseButton';
+import BaseDialog from './components/baseUI/BaseDialog';
+
+import TheForm from './components/TheForm.vue';
+import TeamsList from './components/teams/TeamsList.vue';
+import UsersList from './components/users/UsersList.vue';
+import TeamMembers from './components/teams/TeamMembers.vue';
+import NotFound from './components/nav/NotFound.vue';
+import TeamsFooter from './components/teams/TeamsFooter.vue';
+import UsersFooter from './components/users/UsersFooter.vue';
+
 
 
 const app = createApp(AnyIndentifierApp);
 
+const router = createRouter({
+    history: createWebHistory(),
+    routes: [
+        { path: '/', redirect: '/teams'}, //URL changes
+        { path: '/teams', components: { default: TeamsList,footer: TeamsFooter}, name: 'teams', children: [
+            { path: ':teamId', component: TeamMembers,name: 'team-members', props: true}, //teams/t1
+
+        ]}, //,alias:'/'with alias URL doesn't change
+        { path: '/users', components:{default: UsersList,footer: UsersFooter}},
+       
+        { path: '/:notFound(.*)', component: NotFound}, 
+    ],
+    linkActiveClass: 'active',
+    scrollBehavior(to, from, savedPosition){
+        console.log(to, from, savedPosition);
+        if(savedPosition) {
+            return savedPosition;
+        }
+        return {
+             left: 0, top:0
+        };
+    }
+});
 
 app.component('friend-contact',FriendContact);//
 app.component('new-friend',NewFriend);
@@ -36,7 +73,27 @@ app.component('base-badge', BaseBadge);
 //app.component('badge-list', BadgeList);
 //app.component('user-info', UserInfo);
 app.component('base-card', BaseCard);
+app.component('base-wrap', BaseWrap);
+app.component('base-button', BaseButton);
+app.component('base-dialog', BaseDialog);
 
+app.component('the-form', TheForm);
+
+router.beforeEach(function(to,from,next){
+    console.log('global beforeEach');
+    console.log(to,from);
+    //next();
+    // next(false); cancel 
+    // next('/someroute');
+    // if(to.name === 'team-members'){
+    //     next();
+    // }else{
+    // next({ name: 'team-members', params:{ teamId: 't2'}});
+    // } useful for authentication
+    next();
+});
+
+app.use(router);
 
 app.mount('#app');
 

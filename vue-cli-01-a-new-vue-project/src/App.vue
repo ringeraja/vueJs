@@ -1,13 +1,23 @@
 <template>
+    <the-navigation></the-navigation>
+    <div>
+      <router-view></router-view> <!-- default-->
+    </div>
+    <footer>
+        <router-view name="footer"></router-view>
+    </footer>
+    <learning-survey ></learning-survey>
+    <user-experiences ></user-experiences>
+    
+    <the-form></the-form>
+    <the-footer title="Remember me"></the-footer>
+    <the-resources></the-resources>
     <section>
     <header><h1>My Friends List</h1>
     </header>
-
     <new-friend @add-contact="addContact"></new-friend>
-
     <ul>
         <li><h3>{{welcomeMessage}}</h3></li>
-        
         <friend-contact 
         v-for="friend in friends"
         v-bind:key="friend.id"
@@ -18,8 +28,7 @@
         v-bind:is-favorite= "friend.isFavorite"
         @toggle-favorite="toggleFavoriteStatus"
         @delete-contact="deleteContact"
-        ></friend-contact>
-        
+        ></friend-contact> 
     </ul>
     <header>
       <active-user :username="user.name" :userage="user.age"></active-user>
@@ -38,7 +47,6 @@
   <section>
     <div>
     <!--<TheHeader/> -->
-  
     <the-header></the-header>
     <badge-list></badge-list>
     <user-info
@@ -58,17 +66,18 @@
   <button @click="setSelectedComponent('manage-goal')">Manage goals</button>
  <!--  <active-goals v-if="selectedComponent === 'active-goals'"></active-goals>
   <manage-goal v-if="selectedComponent === 'manage-goal'"></manage-goal> -->
-  <component v-bind:is="selectedComponent"></component>
+  <keep-alive>
+   <component v-bind:is="selectedComponent"></component>
+  </keep-alive>
   </section>
-
-    
 </template>
 
 
 <script>
 // configuration for the app app we wwant to mount on id="app" div
 // config object for main app
-import TheHeader from './components/TheHeader.vue';
+import TheHeader from './components/layout/TheHeader.vue';
+import TheFooter from './components/layout/TheFooter.vue';
 import BadgeList from './components/BadgeList.vue';
 import UserInfo from './components/UserInfo.vue';
 import CourseGoal from './components/CourseGoal.vue'
@@ -76,18 +85,32 @@ import CourseGoal from './components/CourseGoal.vue'
 import ActiveGoals from './components/ActiveGoals.vue';
 import ManageGoal from './components/ManageGoal.vue';
 
+import TheResources from './components/learning-resources/TheResources.vue';
+
+import LearningSurvey from './components/survey/LearningSurvey.vue';
+import UserExperiences from './components/survey/UserExperiences.vue';
+
+import TheNavigation from './components/nav/TheNavigation.vue';
 
 export default{
     components: {  //available in any component not only in app 
       TheHeader: TheHeader,
+      LearningSurvey,
+      UserExperiences,
+      TheResources,
       BadgeList: BadgeList,
       UserInfo: UserInfo,
       CourseGoal,
       ActiveGoals,
       ManageGoal,
+      TheFooter,
+      TheNavigation,
+
+
     },// components registered here are only usable here in this file nowhere eles
     data (){
         return {
+            //savedSurveyResults: [],
             selectedComponent: 'active-goals',
             activeUser: {
                 name: 'Maximilian Schwarzmüller',
@@ -126,6 +149,18 @@ export default{
                 fullText: 'With components, you can split logic (and markup) into separate building blocks and then combine those building blocks (and re-use them) to build powerful user interfaces.',
               }
             ],
+            teams: [
+                { id: 't1', name: 'Frontend Engineers', members: ['u1', 'u2'] },
+                { id: 't2', name: 'Backend Engineers', members: ['u1', 'u2', 'u3'] },
+                { id: 't3', name: 'Client Consulting', members: ['u4', 'u5'] },
+            ],
+            users: [
+                { id: 'u1', fullName: 'Max Schwarz', role: 'Engineer' },
+                { id: 'u2', fullName: 'Praveen Kumar', role: 'Engineer' },
+                { id: 'u3', fullName: 'Julie Jones', role: 'Engineer' },
+                { id: 'u4', fullName: 'Alex Blackfield', role: 'Consultant' },
+                { id: 'u5', fullName: 'Marie Smith', role: 'Consultant' },
+           ],
         }; 
     },
     /* provide: { //changes in data do not reflext in provided data( its a brand new object in memory)
@@ -145,7 +180,9 @@ export default{
     provide() {
       return {
         topics: this.topics,
-        selectTopic: this.activateTopic
+        selectTopic: this.activateTopic,
+        teams: this.teams,
+        users: this.users,
       };
     },
     mounted() {
@@ -190,7 +227,8 @@ export default{
       },
       activateTopic(topicId) {
       this.activeTopic = this.topics.find((topic) => topic.id === topicId);
-    }
+    },
+   
     },
 
 };
@@ -236,12 +274,12 @@ header {
 
 #app /*li <-zakomentarisano zbog UserInfo,theheader...*/,
 form {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  /*box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);*/
   margin: 1rem auto;
   border-radius: 10px;
   padding: 1rem;
   text-align: center;
-  width: 90%;
+  width: 100%;
   max-width: 40rem;
 }
 
@@ -251,7 +289,7 @@ form {
   color: #58004d;
   margin: 0 0 1rem 0;
 }
-*/
+
 #app button {
   font: inherit;
   cursor: pointer;
@@ -282,10 +320,10 @@ form {
 #app form div {
   margin: 1rem 0;
 }
+*/
 h2 {
   margin: 0.75rem 0;
   text-align: center;
 }
-
 
 </style>

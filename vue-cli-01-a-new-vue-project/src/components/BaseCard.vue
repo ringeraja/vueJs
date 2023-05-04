@@ -15,9 +15,9 @@
 <script>
 // name can be antyname, if we leave one unnamed its the default. must have 1 unnamed
 export default {
-    mounted(){
+    /* mounted(){
         console.log(this.$slots.header);
-    }
+    } */
 }
 </script>
 
