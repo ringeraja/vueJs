@@ -23,12 +23,12 @@ import BaseButton from './components/baseUI/BaseButton';
 import BaseDialog from './components/baseUI/BaseDialog';
 
 import TheForm from './components/TheForm.vue';
-import TeamsList from './components/teams/TeamsList.vue';
-import UsersList from './components/users/UsersList.vue';
+import TeamsList from './pages/TeamsList.vue';
+import UsersList from './pages/UsersList.vue';
 import TeamMembers from './components/teams/TeamMembers.vue';
-import NotFound from './components/nav/NotFound.vue';
-import TeamsFooter from './components/teams/TeamsFooter.vue';
-import UsersFooter from './components/users/UsersFooter.vue';
+import NotFound from './pages/NotFound.vue';
+import TeamsFooter from './pages/TeamsFooter.vue';
+import UsersFooter from './pages/UsersFooter.vue';
 
 
 
@@ -37,12 +37,18 @@ const app = createApp(AnyIndentifierApp);
 const router = createRouter({
     history: createWebHistory(),
     routes: [
-        { path: '/', redirect: '/teams'}, //URL changes
+        { path: '/', redirect: '/teams',meta: {needsAuth:true}}, //URL changes
         { path: '/teams', components: { default: TeamsList,footer: TeamsFooter}, name: 'teams', children: [
             { path: ':teamId', component: TeamMembers,name: 'team-members', props: true}, //teams/t1
-
         ]}, //,alias:'/'with alias URL doesn't change
-        { path: '/users', components:{default: UsersList,footer: UsersFooter}},
+        { path: '/users', 
+          components:{default: UsersList,footer: UsersFooter},
+          beforeEnter(to, from, next){
+            console.log('users beforeEnter');
+            console.log(to,from);
+            next();
+          }
+        },
        
         { path: '/:notFound(.*)', component: NotFound}, 
     ],
@@ -82,6 +88,13 @@ app.component('the-form', TheForm);
 router.beforeEach(function(to,from,next){
     console.log('global beforeEach');
     console.log(to,from);
+    if(to.meta.needsAuth){
+        console.log('Needs auth!');
+        next();
+    }else{
+        next();
+    }
+    next();
     //next();
     // next(false); cancel 
     // next('/someroute');
@@ -90,7 +103,11 @@ router.beforeEach(function(to,from,next){
     // }else{
     // next({ name: 'team-members', params:{ teamId: 't2'}});
     // } useful for authentication
-    next();
+});
+
+router.afterEach(function(to,from){ //sending analytics, loging changing pages
+    console.log('global router.afterEach');
+    console.log(to,from);
 });
 
 app.use(router);
